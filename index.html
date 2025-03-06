@@ -1,0 +1,91 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const { useState } = React
+        function Login() {
+
+            const [name, setName] = useState("")
+            const [username, setUsername] = useState("")
+            const [password, setPassword] = useState("")
+            const [spec, setSpec] = useState("")
+            const [exp, setExp] = useState(0)
+            const [desc, setDesc] = useState("")
+
+            function handleSubmit(e) {
+                e.preventDefault()
+                console.log(`
+                    "Nome:", ${name}
+                    "username:", ${username}
+                    "password:", ${password}
+                    "spec:", ${spec}
+                    "exp:", ${exp}
+                    "descrizione:", ${desc}
+                    `
+                );
+
+            }
+
+            return (
+                <>
+                    <form>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <select name="Specializzazione" value={spec} id="" onChange={(e) => setSpec(e.target.value)}>
+                            <option value="0">Specializzazione</option>
+                            <option value="Full Stack">Full Stack</option>
+                            <option value="Frontend">Frontend</option>
+                            <option value="Backend">Backend</option>
+                        </select>
+                        <input
+                            type="number"
+                            value={exp}
+                            onChange={(e) => setExp(e.target.value)}
+                        />
+                        <textarea
+                            name="descrizione"
+                            value={desc}
+                            onChange={(e) => setDesc(e.target.value)}
+                            id="">descrizione
+                        </textarea>
+                        <button onClick={handleSubmit}></button>
+                    </form>
+                </>
+            )
+        }
+    </script>
+    <script type="text/babel">
+        const { createRoot } = ReactDOM
+        const loginForm = document.querySelector('.login-form')
+        const root = createRoot(loginForm)
+        root.render(<Login />)
+    </script>
+</head>
+
+<body>
+    <div class="login-form"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
