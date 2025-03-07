@@ -50,13 +50,13 @@
             function handleSubmit(e) {
                 e.preventDefault()
 
-                if (name && validateUsername() && validatePassword() && spec && spec !== "0" && exp && validateTextArea()) {
+                if (nameRef && validateUsername() && validatePassword() && specRef && specRef.current.value !== "0" && exp && validateTextArea()) {
 
                     console.log(`
-                        "Nome:", ${name}
+                        "Nome:", ${nameRef.current.value}
                         "username:", ${username}
                         "password:", ${password}
-                        "spec:", ${spec}
+                        "spec:", ${specRef.current.value}
                         "exp:", ${exp}
                         "descrizione:", ${desc}
                         `
@@ -77,23 +77,23 @@
             }
             return (
                 <>
-                    <form class="d-flex">
+                    <form className="d-flex">
                         <input
                             type="text"
                             ref={nameRef}
-                            placeHolder="Nome completo"
+                            placeholder="Nome completo"
                         />
                         <input
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            placeHolder="Username"
+                            placeholder="Username"
                             style={{ backgroundColor: validateUsername() ? 'green' : 'red' }}
                         />
                         <input
                             type="password"
                             value={password}
-                            placeHolder="Password"
+                            placeholder="Password"
                             onChange={(e) => setPassword(e.target.value)}
                             style={{ background: validatePassword() ? 'green' : 'red' }}
                         />
@@ -118,7 +118,7 @@
                             value={desc}
                             onChange={(e) => setDesc(e.target.value)}
                             id=""
-                            placeHolder="Descrizione"
+                            placeholder="Descrizione"
                             style={{ backgroundColor: validateTextArea() ? 'green' : 'red' }}
                         >descrizione
                         </textarea>
