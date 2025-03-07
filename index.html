@@ -10,9 +10,11 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
-        const { useState } = React
+        const { useState, useEffect } = React
         function Login() {
-
+            const letters = "abcdefghijklmnopqrstuvwxyz";
+            const numbers = "0123456789";
+            const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
             const [name, setName] = useState("")
             const [username, setUsername] = useState("")
             const [password, setPassword] = useState("")
@@ -20,20 +22,47 @@
             const [exp, setExp] = useState(0)
             const [desc, setDesc] = useState("")
 
-            function handleSubmit(e) {
-                e.preventDefault()
-                console.log(`
-                    "Nome:", ${name}
-                    "username:", ${username}
-                    "password:", ${password}
-                    "spec:", ${spec}
-                    "exp:", ${exp}
-                    "descrizione:", ${desc}
-                    `
-                );
+            function validatePassword() {
+                const lettersBoolean = [...letters].some(letter => password.includes(letter));
+                const numbersBoolean = [...numbers].some(number => password.includes(number));
+                const symbolsBoolean = [...symbols].some(symbol => password.includes(symbol));
 
+                if (password.length > 7 && lettersBoolean && numbersBoolean && symbolsBoolean) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
 
+            function validateTextArea() {
+                if (desc.trim().length > 100 && desc.trim().length < 1000) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+
+
+            function handleSubmit(e) {
+                e.preventDefault()
+
+                if (name && username.length > 5 && validatePassword() && spec && spec !== "0" && exp && validateTextArea()) {
+
+                    console.log(`
+                        "Nome:", ${name}
+                        "username:", ${username}
+                        "password:", ${password}
+                        "spec:", ${spec}
+                        "exp:", ${exp}
+                        "descrizione:", ${desc}
+                        `
+                    );
+                } else {
+                    console.log("non hai selezionato tutti i campi");
+
+                }
+
+            }
             return (
                 <>
                     <form>
@@ -51,6 +80,7 @@
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            style={{ background: validatePassword() ? 'green' : 'red' }}
                         />
                         <select name="Specializzazione" value={spec} id="" onChange={(e) => setSpec(e.target.value)}>
                             <option value="0">Specializzazione</option>
@@ -67,9 +97,11 @@
                             name="descrizione"
                             value={desc}
                             onChange={(e) => setDesc(e.target.value)}
-                            id="">descrizione
+                            id=""
+                            style={{ backgroundColor: validateTextArea() ? 'green' : 'red' }}
+                        >descrizione
                         </textarea>
-                        <button onClick={handleSubmit}></button>
+                        <button onClick={handleSubmit}>Submit</button>
                     </form>
                 </>
             )
