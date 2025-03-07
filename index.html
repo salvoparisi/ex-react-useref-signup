@@ -10,15 +10,15 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
-        const { useState, useEffect } = React
+        const { useState, useEffect, useRef } = React
         function Login() {
             const letters = "abcdefghijklmnopqrstuvwxyz";
             const numbers = "0123456789";
             const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
-            const [name, setName] = useState("")
+            const nameRef = useRef("")
             const [username, setUsername] = useState("")
             const [password, setPassword] = useState("")
-            const [spec, setSpec] = useState("")
+            const specRef = useRef("0")
             const [exp, setExp] = useState(0)
             const [desc, setDesc] = useState("")
 
@@ -41,12 +41,16 @@
                     return false
                 }
             }
+            function validateUsername() {
+                return username.length > 5
+            }
+
 
 
             function handleSubmit(e) {
                 e.preventDefault()
 
-                if (name && username.length > 5 && validatePassword() && spec && spec !== "0" && exp && validateTextArea()) {
+                if (name && validateUsername() && validatePassword() && spec && spec !== "0" && exp && validateTextArea()) {
 
                     console.log(`
                         "Nome:", ${name}
@@ -63,41 +67,58 @@
                 }
 
             }
+            function handleExp(value) {
+                value
+                if (value < 0) {
+                    setExp(0)
+                } else {
+                    setExp(value)
+                }
+            }
             return (
                 <>
-                    <form>
+                    <form class="d-flex">
                         <input
                             type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            ref={nameRef}
+                            placeHolder="Nome completo"
                         />
                         <input
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            placeHolder="Username"
+                            style={{ backgroundColor: validateUsername() ? 'green' : 'red' }}
                         />
                         <input
                             type="password"
                             value={password}
+                            placeHolder="Password"
                             onChange={(e) => setPassword(e.target.value)}
                             style={{ background: validatePassword() ? 'green' : 'red' }}
                         />
-                        <select name="Specializzazione" value={spec} id="" onChange={(e) => setSpec(e.target.value)}>
+                        <select name="Specializzazione" ref={specRef}>
                             <option value="0">Specializzazione</option>
                             <option value="Full Stack">Full Stack</option>
                             <option value="Frontend">Frontend</option>
                             <option value="Backend">Backend</option>
                         </select>
-                        <input
-                            type="number"
-                            value={exp}
-                            onChange={(e) => setExp(e.target.value)}
-                        />
+                        <div>
+                            <div>
+                                Anni di esperienza: </div>
+                            <input
+                                type="number"
+                                value={exp}
+                                onChange={(e) => handleExp(e.target.value)}
+                            />
+
+                        </div>
                         <textarea
                             name="descrizione"
                             value={desc}
                             onChange={(e) => setDesc(e.target.value)}
                             id=""
+                            placeHolder="Descrizione"
                             style={{ backgroundColor: validateTextArea() ? 'green' : 'red' }}
                         >descrizione
                         </textarea>
